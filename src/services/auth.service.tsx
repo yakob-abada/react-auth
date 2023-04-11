@@ -1,6 +1,6 @@
 import axios, {AxiosError} from "axios";
 
-const API_URL = "https://dummyjson.com";
+const API_URL = process.env.REACT_APP_API_URL;
 
 export type LoggedInUserType = {
   id: number,
