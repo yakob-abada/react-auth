@@ -47,6 +47,22 @@ class AuthService {
     }
   }
 
+  static async registerImagesUpload(files: FileList) {
+    const formData = new FormData();
+
+    for (let i = 0 ; i < files.length ; i++) {
+      formData.append("images", files[i]);
+    }
+
+    try {
+      await axios.post(API_URL + "/image-upload", formData);
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        throw new Error(e.message)
+      }
+    }
+  }
+
   static getCurrentUser(): LoggedInUserType | null {
     const userData = localStorage.getItem('user');
 
@@ -56,6 +72,8 @@ class AuthService {
 
     return JSON.parse(userData);
   }
+
+
 }
 
 export default AuthService;

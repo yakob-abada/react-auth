@@ -8,6 +8,10 @@ type RegisterState = {
     lastName: string,
     email: string,
     password: string
+    avatar?: string
+
+    selectedFiles?: FileList
+
     errorMessage?: string
 }
 
@@ -26,8 +30,9 @@ class Register extends Component<RegisterProps, RegisterState>{
         this.onChangeFistName = this.onChangeFistName.bind(this);
         this.onChangeLastName = this.onChangeLastName.bind(this);
         this.onChangeEmail = this.onChangeEmail.bind(this);
-        this.onChangeEmail = this.onChangeEmail.bind(this);
         this.onChangePassword = this.onChangePassword.bind(this);
+        this.onChangeAvatar = this.onChangeAvatar.bind(this);
+        this.onFileChange = this.onFileChange.bind(this);
     }
 
     onChangeFistName(event: React.ChangeEvent<HTMLInputElement>) {
@@ -54,6 +59,22 @@ class Register extends Component<RegisterProps, RegisterState>{
         })
     }
 
+    onChangeAvatar(event: React.ChangeEvent<HTMLInputElement>) {
+        this.setState({
+            avatar: event.target.value
+        })
+    }
+
+    onFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+        console.log(event.target.files);
+        if (event.target.files !== null) {
+            // Update the formData object
+            this.setState({
+                selectedFiles: event.target.files
+            })
+        }
+    }
+
     async onSubmission(event: React.MouseEvent<HTMLButtonElement>) {
         event.preventDefault();
 
@@ -64,6 +85,10 @@ class Register extends Component<RegisterProps, RegisterState>{
                 this.state.email,
                 this.state.password
             )
+
+            if (this.state.selectedFiles !== undefined) {
+                await AuthService.registerImagesUpload(this.state.selectedFiles)
+            }
         } catch (e) {
             if (e instanceof Error) {
                 this.setState({
@@ -104,6 +129,15 @@ class Register extends Component<RegisterProps, RegisterState>{
                             <Form.Label>Password</Form.Label>
                             <Form.Control type="password" name='password' onChange={this.onChangePassword} value={this.state.password} placeholder="Password" />
                         </Form.Group>
+                        <Form.Group className="mb-3" controlId="formBasicAvatar">
+                            <Form.Label>Avatar</Form.Label>
+                            <Form.Control type="url" name='avatar' onChange={this.onChangeAvatar} value={this.state.avatar} placeholder="Avatar url" />
+                        </Form.Group>
+                        <Form.Group controlId="formFileMultiple" className="mb-3">
+                            <Form.Label>Multiple images upload</Form.Label>
+                            <Form.Control type="file" multiple onChange={this.onFileChange} />
+                        </Form.Group>
+
                         <Button onClick={this.onSubmission} variant="primary" type="submit">
                             Register
                         </Button>
