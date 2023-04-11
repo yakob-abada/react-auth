@@ -3,6 +3,7 @@
 In this tutorial, we’re gonna build a React JWT Authentication example with LocalStorage, React Router, Axios and Bootstrap (without Redux). I will show you:
 
 - JWT Authentication Flow for User Signup & User Login
+- Upload react files.
 - Project Structure for React JWT Authentication with LocalStorage, React Router & Axios
 - Creating React Components with Form Validation
 - This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
